@@ -1,8 +1,10 @@
 package drosa99.spring.reactivenetflux.controllers;
 
 import drosa99.spring.reactivenetflux.domain.Movie;
+import drosa99.spring.reactivenetflux.domain.MovieEvent;
 import drosa99.spring.reactivenetflux.services.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,5 +26,11 @@ public class MovieController {
     @GetMapping
     Flux<Movie> getAllMovies(){
         return movieService.getAllMovies();
+    }
+
+    //postman nao suporta stream de eventos
+    @GetMapping(value = "/{id}/events", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    Flux<MovieEvent> streamMovieEvents(@PathVariable String id){
+        return movieService.streamMovieEvents(id);
     }
 }
